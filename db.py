@@ -15,13 +15,11 @@ def init_db(app):
 def init_default_endpoints():
     existing_endpoints = {endpoint.id for endpoint in Endpoint.query.all()}
 
-    # Define default endpoints
     default_endpoints = [
         Endpoint(id="1", url="http://windows.local:8100/mystream/"),
         Endpoint(id="2", url="http://windows.local:8200/mystream/")
     ]
 
-    # with db.session.begin():
     for endpoint in default_endpoints:
         if endpoint.id not in existing_endpoints:
             db.session.add(endpoint)
