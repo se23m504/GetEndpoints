@@ -1,6 +1,6 @@
 services:
   flask-api:
-    build: 
+    build:
       context: ../src
       dockerfile: ../docker/Dockerfile
     ports:
