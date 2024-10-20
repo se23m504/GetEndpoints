@@ -2,5 +2,5 @@
 
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-python app.py
+pip install -r src/requirements.txt
+python src/app.py
