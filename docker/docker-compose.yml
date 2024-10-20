@@ -8,4 +8,4 @@ services:
     environment:
       FLASK_ENV: production
     volumes:
-      - ../instance:/app/instance
+      - ../src/instance:/app/instance
