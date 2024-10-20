@@ -16,13 +16,18 @@ def init_default_endpoints():
     existing_endpoints = {endpoint.id for endpoint in Endpoint.query.all()}
 
     default_endpoints = [
-        Endpoint(id="1", url="http://windows.local:8100/mystream/"),
-        Endpoint(id="2", url="http://windows.local:8200/mystream/")
+        Endpoint(id=1, url="http://windows.local:8100/mystream/"),
+        Endpoint(id=2, url="http://windows.local:8200/mystream/")
     ]
 
+    updated = False
     for endpoint in default_endpoints:
         if endpoint.id not in existing_endpoints:
             db.session.add(endpoint)
+            updated = True
+
+    if updated:
+        db.session.commit()
 
 def get_endpoints_from_db():
     endpoints = Endpoint.query.all()
