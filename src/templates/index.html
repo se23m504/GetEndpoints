@@ -128,19 +128,19 @@
 <h2>cURL Commands</h2>
 <pre>
 # Get all endpoints
-curl http://windows.local:5000/api/endpoints
+curl http://{{ api_host }}:5000/api/endpoints
 
 # Get Endpoint 1
-curl http://windows.local:5000/api/endpoints/1
+curl http://{{ api_host }}:5000/api/endpoints/1
 
 # Get Endpoint 2
-curl http://windows.local:5000/api/endpoints/2
+curl http://{{ api_host }}:5000/api/endpoints/2
 
 # Update Endpoint 1
-curl -X PUT http://windows.local:5000/api/endpoints/1 -H "Content-Type: application/json" -d '{"url": "http://new.url/for/endpoint1"}'
+curl -X PUT http://{{ api_host }}:5000/api/endpoints/1 -H "Content-Type: application/json" -d '{"url": "http://new.url/for/endpoint1"}'
 
 # Update Endpoint 2
-curl -X PUT http://windows.local:5000/api/endpoints/2 -H "Content-Type: application/json" -d '{"url": "http://new.url/for/endpoint2"}'
+curl -X PUT http://{{ api_host }}:5000/api/endpoints/2 -H "Content-Type: application/json" -d '{"url": "http://new.url/for/endpoint2"}'
 </pre>
 
 <script>
@@ -148,7 +148,7 @@ function updateEndpoint(event, endpointId) {
     event.preventDefault();
     const newUrl = document.getElementById(`new-url-${endpointId}`).value;
 
-    fetch(`http://windows.local:5000/api/endpoints/${endpointId}`, {
+    fetch(`http://{{ api_host }}:5000/api/endpoints/${endpointId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
