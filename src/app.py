@@ -1,15 +1,8 @@
-import os
-
-from dotenv import load_dotenv
 from flask import Flask, render_template
 
 from api import api
+from config import API_HOST, DATABASE_URI
 from db import get_endpoints_from_db, init_db
-
-load_dotenv()
-
-DATABASE_URI = os.getenv("DATABASE")
-API_HOST = os.getenv("API_HOST")
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
