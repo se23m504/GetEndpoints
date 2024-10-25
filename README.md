@@ -1,6 +1,8 @@
 # GetEndpoints
 
-This REST API and responsive web application manage WebRTC endpoint streams. It is designed for a Unity app running on the HoloLens, where typing and changing settings can be slow and frustrating. Instead of hardcoding endpoints and having to redeploy the app whenever changes are needed, this setup provides a single source of truth (SSOT). You can easily update the endpoints whenever you want, making it simple to manage without hassle.
+GetEndpoints is a REST API and responsive web application that makes managing WebRTC endpoint streams easier. It is designed for Unity applications running on the HoloLens, where typing long URLs (endpoints) and changing settings can be slow and frustrating.
+
+Instead of hardcoding endpoints and needing to redeploy the app every time you want to make a change, GetEndpoints acts as your single source of truth (SSOT). This allows you to update and manage your endpoints in real-time, keeping your application up to date.
 
 ## Prerequisites
 
