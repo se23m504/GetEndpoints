@@ -3,88 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Endpoints manager</title>
+    <title>Endpoint Manager</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-family: 'Arial', sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
-            color: #333;
+            min-height: 100vh;
+            background-color: #e9ecef;
+            color: #343a40;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
         }
 
         h1 {
-            color: #4CAF50;
+            color: #28a745;
             text-align: center;
             margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
         th, td {
             padding: 12px;
-            border: 1px solid #ccc;
+            border-bottom: 1px solid #dee2e6;
             text-align: left;
+            font-size: 16px;
+            word-wrap: break-word;
         }
 
         th {
-            background-color: #4CAF50;
+            background-color: #28a745;
             color: white;
+            font-weight: 500;
+        }
+
+        tbody tr {
+            transition: background-color 0.2s ease;
         }
 
         tbody tr:hover {
-            background-color: #f1f1f1;
+            background-color: #f8f9fa;
         }
 
         .update-btn {
-            background-color: #4CAF50;
+            background-color: #28a745;
             color: white;
             border: none;
             padding: 8px 12px;
             cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            font-size: 14px;
+            white-space: nowrap;
         }
 
         .update-btn:hover {
-            background-color: #45a049;
+            background-color: #218838;
+            transform: scale(1.05);
         }
 
         input[type="url"] {
             padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: calc(100% - 100px);
-            margin-right: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            width: calc(100% - 110px);
+            margin-right: 8px;
             box-sizing: border-box;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
         }
 
         input[type="url"]:focus {
             outline: none;
-            border-color: #4CAF50;
+            border-color: #28a745;
         }
 
-        h2 {
-            margin-top: 40px;
-            color: #333;
+        .highlight {
+            background-color: #e0f2f1 !important;
         }
 
-        pre {
-            background-color: #fff;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            overflow-x: auto;
-        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
 
-        @media (max-width: 600px) {
             table, th, td {
                 font-size: 14px;
+            }
+
+            h1 {
+                font-size: 22px;
             }
 
             input[type="url"] {
@@ -92,61 +126,125 @@
             }
 
             .update-btn {
-                padding: 6px 10px;
+                padding: 6px 8px;
+            }
+        }
+
+        @media (max-width: 540px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            table {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tbody tr {
+                display: block;
+                background-color: #fff;
+                border-radius: 10px;
+                border: 1px solid #ddd;
+                margin-bottom: 15px;
+                padding: 15px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            tbody tr td {
+                display: block;
+                justify-content: flex-start;
+                padding: 10px 0;
+                width: 100%;
+            }
+
+            tbody tr td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                color: #28a745;
+                margin-right: 10px;
+            }
+
+            .update-btn-container {
+                margin-top: 10px;
+                display: flex;
+                justify-content: flex-start;
+                flex-direction: column;
+            }
+
+            .update-btn {
+                padding: 8px 12px;
+                font-size: 14px;
+                background-color: #4caf50;
+                margin-top: 5px;
+            }
+
+            input[type="url"] {
+                width: 100%;
+                margin-bottom: 10px;
             }
         }
     </style>
 </head>
 <body>
 
-<h1>Endpoints manager</h1>
-
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>URL</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody id="endpoints-table-body">
-        {% for endpoint in endpoints %}
-        <tr>
-            <td>{{ endpoint.id }}</td>
-            <td id="url-{{ endpoint.id }}">{{ endpoint.url }}</td>
-            <td>
-                <form onsubmit="return updateEndpoint(event, '{{ endpoint.id }}')">
-                    <input type="url" id="new-url-{{ endpoint.id }}" placeholder="New URL" required>
-                    <button type="submit" class="update-btn">Update</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="container">
+    <h1>Endpoint Manager</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>URL</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="endpoints-table-body">
+            {% for endpoint in endpoints %}
+            <tr id="row-{{ endpoint.id }}">
+                <td data-label="ID">{{ endpoint.id }}</td>
+                <td data-label="URL" id="url-{{ endpoint.id }}">{{ endpoint.url }}</td>
+                <td data-label="Action">
+                    <form class="update-btn-container" onsubmit="return updateEndpoint(event, '{{ endpoint.id }}')">
+                        <input type="url" id="new-url-{{ endpoint.id }}" placeholder="New URL" required>
+                        <button type="submit" class="update-btn">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 <script>
 function updateEndpoint(event, endpointId) {
     event.preventDefault();
-    const newUrl = document.getElementById(`new-url-${endpointId}`).value;
+
+    const newUrlInput = document.getElementById(`new-url-${endpointId}`);
+    const newUrl = newUrlInput.value.trim();
+    const row = document.getElementById(`row-${endpointId}`);
 
     fetch(`http://{{ api_host }}:5000/api/endpoints/${endpointId}`, {
         method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: newUrl }),
     })
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
             document.getElementById(`url-${endpointId}`).innerText = newUrl;
+            newUrlInput.value = "";
+            row.classList.add("highlight");
+
+            setTimeout(() => row.classList.remove("highlight"), 3000);
         } else {
-            console.error(data.message);
+            console.error("Failed to update URL:", data.message);
         }
     })
     .catch(error => {
-        console.error('Error:', error);
+        console.error("Error:", error);
     });
 }
 </script>
