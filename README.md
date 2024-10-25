@@ -29,6 +29,18 @@ This REST API is for managing WebRTC endpoint streams. It is designed for a Unit
 - `GET /api/endpoints/{id}`: Get a specific endpoint by ID.
 - `PUT /api/endpoints/{id}`: Update an existing endpoint.
 
+### cURL examples
+
+- curl http://windows.local:5000/api/endpoints
+- curl http://windows.local:5000/api/endpoints/1
+- curl -X PUT http://windows.local:5000/api/endpoints/1 -H "Content-Type: application/json" -d '{"url": "http://windows.local:8500/mystream/"}'
+
+### Invoke-WebRequest examples
+
+- Invoke-WebRequest -Uri http://windows.local:5000/api/endpoints
+- Invoke-WebRequest -Uri http://windows.local:5000/api/endpoints/1
+- Invoke-WebRequest -Uri http://windows.local:5000/api/endpoints/1 -Method PUT -Headers @{"Content-Type"="application/json"} -Body '{"url": "http://windows.local:8500/mystream/"}'
+
 ## API host
 
-By default, this API expects `windows.local` to be an existing DNS record on your DNS server (which could also be defined in your hosts file). If you don't want to use `windows.local`, update the `API_HOST` in your `.env` file. 
+By default, this API expects `windows.local` to be an existing DNS record on your DNS server (which could also be defined in your hosts file). If you don't want to use `windows.local`, update the `API_HOST` in your `.env` file.
