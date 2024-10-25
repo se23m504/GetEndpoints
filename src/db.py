@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
+from config import API_HOST
+
 db = SQLAlchemy()
 
 
@@ -19,8 +21,8 @@ def init_default_endpoints():
     existing_endpoints = {endpoint.id for endpoint in Endpoint.query.all()}
 
     default_endpoints = [
-        Endpoint(id=1, url="http://windows.local:8100/mystream/"),
-        Endpoint(id=2, url="http://windows.local:8200/mystream/"),
+        Endpoint(id=1, url=f"http://{API_HOST}:8100/mystream/"),
+        Endpoint(id=2, url=f"http://{API_HOST}:8200/mystream/"),
     ]
 
     updated = False
