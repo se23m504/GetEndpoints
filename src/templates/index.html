@@ -219,6 +219,23 @@
 </div>
 
 <script>
+function fetchEndpoints() {
+    fetch(`http://{{ api_host }}:5000/api/endpoints`)
+    .then(response => response.json())
+    .then(data => {
+        data.forEach(endpoint => {
+            const row = document.getElementById(`row-${endpoint.id}`);
+            
+            if (row) {
+                document.getElementById(`url-${endpoint.id}`).innerText = endpoint.url;
+            }
+        });
+    })
+    .catch(error => {
+        console.error("Error fetching endpoints:", error);
+    });
+}
+
 function updateEndpoint(event, endpointId) {
     event.preventDefault();
 
@@ -238,7 +255,7 @@ function updateEndpoint(event, endpointId) {
             newUrlInput.value = "";
             row.classList.add("highlight");
 
-            setTimeout(() => row.classList.remove("highlight"), 3000);
+            setTimeout(() => row.classList.remove("highlight"), 2000);
         } else {
             console.error("Failed to update URL:", data.message);
         }
@@ -247,6 +264,10 @@ function updateEndpoint(event, endpointId) {
         console.error("Error:", error);
     });
 }
+
+setInterval(fetchEndpoints, 15000);
+
+fetchEndpoints();
 </script>
 
 </body>
