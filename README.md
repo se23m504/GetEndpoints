@@ -1,6 +1,6 @@
 # GetEndpoints
 
-This REST API is for managing WebRTC endpoint streams. It is designed for a Unity app running on the HoloLens, where typing and changing settings can be slow and frustrating. Instead of hardcoding endpoints and having to redeploy the app whenever changes are needed, this API provides a single source of truth (SSOT). You can easily update the endpoints whenever you want, making it simple to manage without hassle.
+This REST API and responsive web application manage WebRTC endpoint streams. It is designed for a Unity app running on the HoloLens, where typing and changing settings can be slow and frustrating. Instead of hardcoding endpoints and having to redeploy the app whenever changes are needed, this setup provides a single source of truth (SSOT). You can easily update the endpoints whenever you want, making it simple to manage without hassle.
 
 ## Prerequisites
 
@@ -31,15 +31,21 @@ This REST API is for managing WebRTC endpoint streams. It is designed for a Unit
 
 ### cURL examples
 
-- curl http://windows.local:5000/api/endpoints
-- curl http://windows.local:5000/api/endpoints/1
-- curl -X PUT http://windows.local:5000/api/endpoints/1 -H "Content-Type: application/json" -d '{"url": "http://windows.local:8500/mystream/"}'
+```
+curl http://windows.local:5000/api/endpoints
+
+curl http://windows.local:5000/api/endpoints/1
+
+curl -X PUT http://windows.local:5000/api/endpoints/1 -H "Content-Type: application/json" -d '{"url": "http://windows.local:8500/mystream/"}'
+```
 
 ### Invoke-WebRequest examples
 
-- Invoke-WebRequest -Uri http://windows.local:5000/api/endpoints
-- Invoke-WebRequest -Uri http://windows.local:5000/api/endpoints/1
-- Invoke-WebRequest -Uri http://windows.local:5000/api/endpoints/1 -Method PUT -Headers @{"Content-Type"="application/json"} -Body '{"url": "http://windows.local:8500/mystream/"}'
+```
+Invoke-WebRequest -Uri http://windows.local:5000/api/endpoints
+Invoke-WebRequest -Uri http://windows.local:5000/api/endpoints/1
+Invoke-WebRequest -Uri http://windows.local:5000/api/endpoints/1 -Method PUT -Headers @{"Content-Type"="application/json"} -Body '{"url": "http://windows.local:8500/mystream/"}'
+```
 
 ## API host
 
