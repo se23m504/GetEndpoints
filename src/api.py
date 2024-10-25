@@ -1,8 +1,20 @@
+import socket
+
 from flask import Blueprint, abort, jsonify, request
 
+from config import API_HOST
 from db import get_endpoint_by_id, get_endpoints_from_db, update_endpoint_in_db
 
 api = Blueprint("api", __name__)
+
+
+@api.route("/api/ip", methods=["GET"])
+def get_ip():
+    try:
+        ip_address = socket.gethostbyname(API_HOST)
+        return jsonify({"ip": ip_address}), 200
+    except socket.gaierror:
+        return jsonify({"error": f"Could not resolve IP address for {API_HOST}"}), 404
 
 
 @api.route("/api/endpoints", methods=["GET"])
