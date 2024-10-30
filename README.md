@@ -35,9 +35,7 @@ Instead of hardcoding endpoints and needing to redeploy the app every time you w
 
 ```
 curl http://windows.local:5000/api/endpoints
-
 curl http://windows.local:5000/api/endpoints/1
-
 curl -X PUT http://windows.local:5000/api/endpoints/1 -H "Content-Type: application/json" -d '{"url": "http://windows.local:8500/mystream/"}'
 ```
 
