@@ -1,6 +1,6 @@
 from zeroconf import ServiceInfo, Zeroconf
 
-from config import API_HOST, SERVICE_IP, SERVICE_NAME, SERVICE_PORT, SERVICE_TYPE
+from config import SERVICE_IP, SERVICE_NAME, SERVICE_PORT, SERVICE_TYPE
 
 zeroconf = Zeroconf()
 
@@ -9,10 +9,8 @@ info = ServiceInfo(
     name=f"{SERVICE_NAME}.{SERVICE_TYPE}",
     addresses=[SERVICE_IP],
     port=int(SERVICE_PORT),
-    server=API_HOST,
-    properties={
-        "path": "/api/endpoints",
-    },
+    server=f"{SERVICE_NAME}.local.",
+    properties={"path": "/api/endpoints"},
 )
 
 
