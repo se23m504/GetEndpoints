@@ -12,7 +12,6 @@ info = ServiceInfo(
     server=API_HOST,
     properties={
         "path": "/api/endpoints",
-        # "host": API_HOST
     },
 )
 
