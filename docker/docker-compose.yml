@@ -1,5 +1,7 @@
+name: GetEndpoints
+
 services:
-  flask-api:
+  api:
     build:
       context: ../src
       dockerfile: ../docker/Dockerfile
