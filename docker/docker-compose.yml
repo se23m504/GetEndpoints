@@ -5,8 +5,8 @@ services:
     build:
       context: ../src
       dockerfile: ../docker/Dockerfile
-    ports:
-      - 5000:5000
+    network_mode: host
+    stop_signal: SIGTERM
     environment:
       FLASK_ENV: production
     volumes:

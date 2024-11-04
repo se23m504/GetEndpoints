@@ -1,4 +1,8 @@
+import signal
+import sys
+
 from flask import Flask, render_template
+from waitress import serve
 
 from api import api
 from config import API_HOST, DATABASE_URI
@@ -13,6 +17,14 @@ app.register_blueprint(api)
 init_db(app)
 
 
+def handle_exit(*args):
+    unregister_service()
+    sys.exit(0)
+
+
+signal.signal(signal.SIGTERM, handle_exit)
+
+
 @app.route("/")
 def homepage():
     endpoints = get_endpoints_from_db()
@@ -23,6 +35,6 @@ if __name__ == "__main__":
     register_service()
 
     try:
-        app.run(host="0.0.0.0", port=5000)
+        serve(app, host="0.0.0.0", port=5000)
     finally:
         unregister_service()
