@@ -1,3 +1,4 @@
+import logging
 import signal
 import sys
 
@@ -5,7 +6,7 @@ from flask import Flask, render_template
 from waitress import serve
 
 from api import api
-from config import API_HOST, DATABASE_URI
+from config import API_HOST, DATABASE_URI, LOG_LEVEL, SERVICE_IP, SERVICE_PORT
 from db import get_endpoints_from_db, init_db
 from register import register_service, unregister_service
 
@@ -32,9 +33,11 @@ def homepage():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.getLevelName(LOG_LEVEL))
+
     register_service()
 
     try:
-        serve(app, host="0.0.0.0", port=5000)
+        serve(app, host=SERVICE_IP, port=SERVICE_PORT)
     finally:
         unregister_service()

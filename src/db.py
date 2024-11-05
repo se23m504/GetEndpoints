@@ -1,6 +1,8 @@
+import logging
+
 from flask_sqlalchemy import SQLAlchemy
 
-from config import API_HOST
+from config import API_HOST, DEFAULT_ENDPOINTS
 
 db = SQLAlchemy()
 
@@ -14,7 +16,8 @@ def init_db(app):
     db.init_app(app)
     with app.app_context():
         db.create_all()
-        init_default_endpoints()
+        if DEFAULT_ENDPOINTS:
+            init_default_endpoints()
 
 
 def init_default_endpoints():
@@ -28,6 +31,7 @@ def init_default_endpoints():
     updated = False
     for endpoint in default_endpoints:
         if endpoint.id not in existing_endpoints:
+            logging.info(f"Adding default endpoint {endpoint.url}")
             db.session.add(endpoint)
             updated = True
 
@@ -40,13 +44,49 @@ def get_endpoints_from_db():
     return [{"id": endpoint.id, "url": endpoint.url} for endpoint in endpoints]
 
 
+def add_endpoint_to_db(url):
+    new_endpoint = Endpoint(url=url)
+    db.session.add(new_endpoint)
+    db.session.commit()
+    logging.info(f"Added new endpoint {url}")
+    return new_endpoint.id
+
+
+# def update_endpoint_in_db(endpoint_id, new_url):
+#     with db.session.begin():
+#         endpoint = Endpoint.query.get(endpoint_id)
+#         if endpoint:
+#             endpoint.url = new_url
+#             db.session.add(endpoint)
+#             return True
+#         else:
+#             db.session.add(Endpoint(id=endpoint_id, url=new_url))
+#             return False
+
+
 def update_endpoint_in_db(endpoint_id, new_url):
-    with db.session.begin():
-        endpoint = Endpoint.query.get(endpoint_id)
-        if endpoint:
-            endpoint.url = new_url
-        else:
-            db.session.add(Endpoint(id=endpoint_id, url=new_url))
+    endpoint = Endpoint.query.get(endpoint_id)
+    if endpoint:
+        endpoint.url = new_url
+        db.session.commit()
+        logging.info(f"Updated endpoint {endpoint_id} to {new_url}")
+        return True
+    return False
+
+
+def get_endpoint_by_url(url):
+    endpoint = Endpoint.query.filter_by(url=url).first()
+    return {"id": endpoint.id, "url": endpoint.url} if endpoint else None
+
+
+def delete_endpoint_from_db(endpoint_id):
+    endpoint = Endpoint.query.get(endpoint_id)
+    if endpoint:
+        db.session.delete(endpoint)
+        db.session.commit()
+        logging.info(f"Deleted endpoint {endpoint_id}")
+        return True
+    return False
 
 
 def get_endpoint_by_id(endpoint_id):
