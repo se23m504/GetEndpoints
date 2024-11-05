@@ -42,21 +42,21 @@ Instead of hardcoding endpoints and needing to redeploy the app every time you w
 
 Note that by default, the API initializes with predefined endpoints unless `DEFAULT_ENDPOINTS=false` is set in the `.env` file. The default endpoints are:
 
-- `/api/endpoints/1: {"url": "http://$API_HOST:8100/mystream/"}`
-- `/api/endpoints/2: {"url": "http://$API_HOST:8200/mystream/"}`
+- `/api/endpoints/1: {"url": "http://$SERVICE_IP:8100/mystream/"}`
+- `/api/endpoints/2: {"url": "http://$SERVICE_IP:8200/mystream/"}`
 
 ### cURL examples
 
 ```
-curl http://$API_HOST:5000/api/endpoints
-curl http://$API_HOST:5000/api/endpoints/1
-curl -X PUT http://$API_HOST:5000/api/endpoints/1 -H "Content-Type: application/json" -d '{"url": "http://$API_HOST:8500/mystream/"}'
+curl http://$SERVICE_IP:5000/api/endpoints
+curl http://$SERVICE_IP:5000/api/endpoints/1
+curl -X PUT http://$SERVICE_IP:5000/api/endpoints/1 -H "Content-Type: application/json" -d '{"url": "http://$SERVICE_IP:8500/mystream/"}'
 ```
 
 ### Invoke-WebRequest examples
 
 ```
-Invoke-WebRequest -Uri http://$API_HOST:5000/api/endpoints
-Invoke-WebRequest -Uri http://$API_HOST:5000/api/endpoints/1
-Invoke-WebRequest -Uri http://$API_HOST:5000/api/endpoints/1 -Method PUT -Headers @{"Content-Type"="application/json"} -Body '{"url": "http://$API_HOST:8500/mystream/"}'
+Invoke-WebRequest -Uri http://$SERVICE_IP:5000/api/endpoints
+Invoke-WebRequest -Uri http://$SERVICE_IP:5000/api/endpoints/1
+Invoke-WebRequest -Uri http://$SERVICE_IP:5000/api/endpoints/1 -Method PUT -Headers @{"Content-Type"="application/json"} -Body '{"url": "http://$SERVICE_IP:8500/mystream/"}'
 ```

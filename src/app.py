@@ -6,7 +6,7 @@ from flask import Flask, render_template
 from waitress import serve
 
 from api import api
-from config import API_HOST, DATABASE_URI, LOG_LEVEL, SERVICE_IP, SERVICE_PORT
+from config import DATABASE_URI, LOG_LEVEL, SERVICE_IP, SERVICE_PORT
 from db import get_endpoints_from_db, init_db
 from register import register_service, unregister_service
 
@@ -29,7 +29,7 @@ signal.signal(signal.SIGTERM, handle_exit)
 @app.route("/")
 def homepage():
     endpoints = get_endpoints_from_db()
-    return render_template("index.html", endpoints=endpoints, api_host=API_HOST)
+    return render_template("index.html", endpoints=endpoints, api_host=SERVICE_IP)
 
 
 if __name__ == "__main__":

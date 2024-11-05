@@ -2,7 +2,7 @@ import logging
 
 from flask_sqlalchemy import SQLAlchemy
 
-from config import API_HOST, DEFAULT_ENDPOINTS
+from config import DEFAULT_ENDPOINTS, SERVICE_IP
 
 db = SQLAlchemy()
 
@@ -24,8 +24,8 @@ def init_default_endpoints():
     existing_endpoints = {endpoint.id for endpoint in Endpoint.query.all()}
 
     default_endpoints = [
-        Endpoint(id=1, url=f"http://{API_HOST}:8100/mystream/"),
-        Endpoint(id=2, url=f"http://{API_HOST}:8200/mystream/"),
+        Endpoint(id=1, url=f"http://{SERVICE_IP}:8100/mystream/"),
+        Endpoint(id=2, url=f"http://{SERVICE_IP}:8200/mystream/"),
     ]
 
     updated = False
@@ -50,18 +50,6 @@ def add_endpoint_to_db(url):
     db.session.commit()
     logging.info(f"Added new endpoint {url}")
     return new_endpoint.id
-
-
-# def update_endpoint_in_db(endpoint_id, new_url):
-#     with db.session.begin():
-#         endpoint = Endpoint.query.get(endpoint_id)
-#         if endpoint:
-#             endpoint.url = new_url
-#             db.session.add(endpoint)
-#             return True
-#         else:
-#             db.session.add(Endpoint(id=endpoint_id, url=new_url))
-#             return False
 
 
 def update_endpoint_in_db(endpoint_id, new_url):
