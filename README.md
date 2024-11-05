@@ -4,6 +4,13 @@ GetEndpoints is a REST API and responsive web application that makes managing We
 
 Instead of hardcoding endpoints and needing to redeploy the app every time you want to make a change, GetEndpoints acts as your single source of truth (SSOT). This allows you to update and manage your endpoints in real-time, keeping your application up to date.
 
+## Features
+
+- **Automatic service discovery**: Registers as an `_http._tcp.` service using Zeroconf, making it easily discoverable on the network.
+- **Lightweight REST API**: Minimal yet robust API for managing WebRTC endpoints.
+- **Responsive and bloat-free**: Built with vanilla JS and HTML for fast, adaptable performance on any device.
+- **SQLite database**: Uses SQLite by default, easily extendable to other databases by adjusting the endpoint. 
+
 ## Prerequisites
 
 - `python >= 3.11`
@@ -28,25 +35,28 @@ Instead of hardcoding endpoints and needing to redeploy the app every time you w
 ### Endpoints
 
 - `GET /api/endpoints`: Get the list of all WebRTC endpoints.
+- `POST /api/endpoints`: Add a new endpoint.
 - `GET /api/endpoints/{id}`: Get a specific endpoint by ID.
 - `PUT /api/endpoints/{id}`: Update an existing endpoint.
+- `DELETE /api/endpoints/{id}`: Delete an endpoint.
+
+Note that by default, the API initializes with predefined endpoints unless `DEFAULT_ENDPOINTS=false` is set in the `.env` file. The default endpoints are:
+
+- `/api/endpoints/1: {"url": "http://$API_HOST:8100/mystream/"}`
+- `/api/endpoints/2: {"url": "http://$API_HOST:8200/mystream/"}`
 
 ### cURL examples
 
 ```
-curl http://windows.local:5000/api/endpoints
-curl http://windows.local:5000/api/endpoints/1
-curl -X PUT http://windows.local:5000/api/endpoints/1 -H "Content-Type: application/json" -d '{"url": "http://windows.local:8500/mystream/"}'
+curl http://$API_HOST:5000/api/endpoints
+curl http://$API_HOST:5000/api/endpoints/1
+curl -X PUT http://$API_HOST:5000/api/endpoints/1 -H "Content-Type: application/json" -d '{"url": "http://$API_HOST:8500/mystream/"}'
 ```
 
 ### Invoke-WebRequest examples
 
 ```
-Invoke-WebRequest -Uri http://windows.local:5000/api/endpoints
-Invoke-WebRequest -Uri http://windows.local:5000/api/endpoints/1
-Invoke-WebRequest -Uri http://windows.local:5000/api/endpoints/1 -Method PUT -Headers @{"Content-Type"="application/json"} -Body '{"url": "http://windows.local:8500/mystream/"}'
+Invoke-WebRequest -Uri http://$API_HOST:5000/api/endpoints
+Invoke-WebRequest -Uri http://$API_HOST:5000/api/endpoints/1
+Invoke-WebRequest -Uri http://$API_HOST:5000/api/endpoints/1 -Method PUT -Headers @{"Content-Type"="application/json"} -Body '{"url": "http://$API_HOST:8500/mystream/"}'
 ```
-
-## API host
-
-By default, this API expects `windows.local` to be an existing DNS record on your DNS server (which could also be defined in your hosts file). If you don't want to use `windows.local`, update the `API_HOST` in your `.env` file.
