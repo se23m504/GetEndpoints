@@ -26,11 +26,20 @@ Instead of hardcoding endpoints and needing to redeploy the app every time you w
    bash run.sh
    ```
 
-   or, if you are on Windows
+   or, if you are on Windows:
 
    ```ps
    .\start.bat
    ```
+
+   Alternatively, if you prefer to use docker you can run:
+
+   ```bash
+   cd docker
+   docker compose up --build
+   ```
+
+   However, due to the use of `network_mode: host`, this method is only supported on Linux. For more information, refer to the [docker docs](https://docs.docker.com/engine/network/drivers/host/#docker-desktop).
 
 ### Endpoints
 
@@ -44,6 +53,8 @@ Note that by default, the API initializes with predefined endpoints unless `DEFA
 
 - `/api/endpoints/1: {"url": "http://$SERVICE_IP:8100/mystream/"}`
 - `/api/endpoints/2: {"url": "http://$SERVICE_IP:8200/mystream/"}`
+
+Here, we use the service IP, which matches the IP address for the API. This way, we don't rely on DNS resolution, which can sometimes have issues. The main task is to access the API endpoint, which can be done either through the service IP or with Zeroconf. You can also use a custom mDNS client that follows RFC 6762 and RFC 6763, like the one implemented in  [WebView](https://github.com/se23m504/WebView).
 
 ### cURL examples
 
